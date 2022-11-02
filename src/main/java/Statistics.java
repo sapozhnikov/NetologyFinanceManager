@@ -23,7 +23,9 @@ public class Statistics {
 
     private void SaveStatistics(){
         try (ObjectOutputStream objectOutputStream = new ObjectOutputStream(new FileOutputStream(saveFileName));){
-            objectOutputStream.writeObject(purchases);
+            if (purchases != null) {
+                objectOutputStream.writeObject(purchases);
+            }
         } catch (IOException e) {
             System.out.println("Can't save statistics");
         }
@@ -38,6 +40,9 @@ public class Statistics {
             System.out.println("Can't load statistics");
         } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);
+        }
+        if (purchases == null){
+            purchases = new ArrayList<>();
         }
     }
 

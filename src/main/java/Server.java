@@ -19,16 +19,20 @@ public class Server {
         try (ServerSocket serverSocket = new ServerSocket(8989);) {
             while (true) {
                 try (Socket socket = serverSocket.accept();
-                     BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-                     PrintWriter out = new PrintWriter(socket.getOutputStream());) {
-                    String stringFromSocket = in.readLine();
+                     BufferedReader serverIn = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                     PrintWriter serverOut = new PrintWriter(socket.getOutputStream(), true);) {
+                    String stringFromSocket = serverIn.readLine(); //server in
+                    System.out.println("server received: " + stringFromSocket);
                     if (stringFromSocket.equals(Constants.killSwitch)) {
                         break;
                     }
 
                     Purchase purchase = gson.fromJson(stringFromSocket, Purchase.class);
                     if (statistics.CommitPurchase(purchase)) {
-                        out.println(gson.toJson(statistics.GetReport()));
+                        serverOut.println(gson.toJson(statistics.GetReport())); //server out
+                    }
+                    else {
+                        serverOut.println("{}"); //server out
                     }
                 }
             }
