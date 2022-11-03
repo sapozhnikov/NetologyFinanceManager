@@ -28,8 +28,9 @@ public class Server {
                     }
 
                     Purchase purchase = gson.fromJson(stringFromSocket, Purchase.class);
-                    if (statistics.CommitPurchase(purchase)) {
-                        serverOut.println(gson.toJson(statistics.GetReport())); //server out
+                    Report report = statistics.CommitPurchase(purchase);
+                    if (report != null) {
+                        serverOut.println(gson.toJson(report)); //server out
                     }
                     else {
                         serverOut.println("{}"); //server out
