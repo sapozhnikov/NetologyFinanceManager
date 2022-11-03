@@ -1,7 +1,11 @@
 import org.junit.jupiter.api.*;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.net.Socket;
+import java.net.SocketException;
 import java.net.SocketTimeoutException;
 
 import static org.junit.jupiter.api.Assertions.fail;
@@ -50,13 +54,18 @@ public class ServerTest {
     }
 
     @AfterAll
-    static void ServerClose() throws IOException, InterruptedException {
+    static void ServerClose() throws InterruptedException {
+        try(
         Socket socket = new Socket("localhost", 8989);
-        PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
-        socket.setSoTimeout(1000);
-
-        System.out.println("sending killswitch");
-        out.println(Constants.killSwitch);
-        serverThread.join();
+        PrintWriter out = new PrintWriter(socket.getOutputStream(), true);) {
+            socket.setSoTimeout(1000);
+            System.out.println("sending killswitch");
+            out.println(Constants.killSwitch);
+            serverThread.join();
+        } catch (SocketException e) {
+            fail("Can't connect to server");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
