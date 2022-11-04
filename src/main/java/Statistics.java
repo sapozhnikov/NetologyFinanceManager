@@ -89,12 +89,23 @@ public class Statistics {
         if (purchase == null){
             return null;
         }
-
         if (!Pattern.matches("^\\d{4}[.]\\d{2}[.]\\d{2}$", purchase.getDate())){ //YYYY.MM.DD
             return null;
         }
 
-        purchases.add(purchaseToStat(purchase)); //TODO optimize
+        //if purchase with same date and category exists then increment sum
+        PurchaseStat pStat = purchaseToStat(purchase);
+        boolean foundMatchedPurchase = false;
+        for (PurchaseStat p : purchases) {
+            if (p.getCategory().equals(pStat.getCategory()) && p.getDate().equals(pStat.getDate())){
+                p.incrementSum(pStat.getSum());
+                foundMatchedPurchase = true;
+                break;
+            }
+        }
+        if (!foundMatchedPurchase) {
+            purchases.add(pStat);
+        }
 
         CategoryReport maxCategory = getMaxCategoryReportForPeriod(null);
         CategoryReport maxYearCategory = getMaxCategoryReportForPeriod(purchase.getDate().substring(0, 4));
