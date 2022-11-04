@@ -7,6 +7,14 @@ public class CategoryReport {
     private String category;
     private Integer sum;
 
+    public String getCategory() {
+        return category;
+    }
+
+    public Integer getSum() {
+        return sum;
+    }
+
     @Override
     public String toString() {
         return "\tcategory='" + category + '\n' +

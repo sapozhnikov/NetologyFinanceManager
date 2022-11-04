@@ -21,6 +21,22 @@ public class Report {
         this.maxDayCategory = maxDayCategory;
     }
 
+    public CategoryReport getMaxCategory() {
+        return maxCategory;
+    }
+
+    public CategoryReport getMaxYearCategory() {
+        return maxYearCategory;
+    }
+
+    public CategoryReport getMaxMonthCategory() {
+        return maxMonthCategory;
+    }
+
+    public CategoryReport getMaxDayCategory() {
+        return maxDayCategory;
+    }
+
     public Report(CategoryReport maxCategory, CategoryReport maxYearCategory, CategoryReport maxMonthCategory, CategoryReport maxDayCategory) {
         this.maxCategory = maxCategory;
         this.maxYearCategory = maxYearCategory;
